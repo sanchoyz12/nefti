@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Чёрное золото</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f121b 0%, #1a1f35 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .vinyl-container {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #2d2d2d 0%, #111 100%);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            animation: spin 8s linear infinite forwards;
+            animation-play-state: paused;
+            transition: transform 0.3s ease;
+        }
+
+        .vinyl-container.playing {
+            animation-play-state: running;
+            box-shadow: 0 15px 45px rgba(234, 179, 8, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .vinyl-grooves {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: repeating-radial-gradient(
+                #111 0,
+                #111 2px,
+                #222 3px,
+                #222 4px
+            );
+        }
+
+        .vinyl-center {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vinyl-hole {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #0f121b;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .song-info {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .song-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #ffffff, #eab308);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .song-artist {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .controls {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 25px 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #eab308;
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .play-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #eab308;
+            border: none;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .play-btn:active {
+            transform: scale(0.9);
+        }
+
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            margin-left: 4px; /* visual center for play icon */
+            transition: all 0.2s;
+        }
+
+        .play-btn.playing svg {
+            margin-left: 0;
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Footer & Social */
+        .footer {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+
+
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            line-height: 1.4;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="vinyl-container" id="vinyl">
+            <div class="vinyl-grooves"></div>
+            <div class="vinyl-center">
+                <div class="vinyl-hole"></div>
+            </div>
+        </div>
+
+        <div class="song-info">
+            <h1 class="song-title">Чёрное золото</h1>
+            <div class="song-artist">исполняет какой-то еврей дворник</div>
+        </div>
+
+        <div class="controls">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="time-info">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="play-btn" id="play-btn" aria-label="Play">
+                    <!-- Play icon -->
+                    <svg viewBox="0 0 24 24" id="play-icon">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <!-- Pause icon (hidden initially) -->
+                    <svg viewBox="0 0 24 24" id="pause-icon" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="disclaimer">
+            Упоминаемый в треке ресурс X (бывший Twitter) — доступ к социальной сети заблокирован на территории РФ в соответствии с требованием Роскомнадзора.
+        </div>
+    </div>
+
+    <!-- Audio Element: Loading the local MP3 file -->
+    <audio id="audio" src="Чёрное золото.mp3" preload="metadata"></audio>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const vinyl = document.getElementById('vinyl');
+
+        let isPlaying = false;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Play / Pause logic
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        });
+
+        audio.addEventListener('play', () => {
+            isPlaying = true;
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+            playBtn.classList.add('playing');
+            vinyl.classList.add('playing');
+        });
+
+        audio.addEventListener('pause', () => {
+            isPlaying = false;
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            playBtn.classList.remove('playing');
+            vinyl.classList.remove('playing');
+        });
+
+        // Update progress bar
+        audio.addEventListener('timeupdate', () => {
+            const current = audio.currentTime;
+            const duration = audio.duration;
+            if (duration) {
+                const percent = (current / duration) * 100;
+                progress.style.width = `${percent}%`;
+                currentTimeEl.textContent = formatTime(current);
+            }
+        });
+
+        // Load metadata (duration)
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        // Click on progress bar to seek
+        progressBar.addEventListener('click', (e) => {
+            const width = progressBar.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            
+            if (duration) {
+                audio.currentTime = (clickX / width) * duration;
+            }
+        });
+
+        // End of song
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            playBtn.classList.remove('playing');
+            vinyl.classList.remove('playing');
+            progress.style.width = '0%';
+            currentTimeEl.textContent = '0:00';
+            audio.currentTime = 0;
+        });
+
+    </script>
+</body>
+</html>
